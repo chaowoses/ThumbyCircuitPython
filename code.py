@@ -2,7 +2,10 @@ import os
 import thumby
 import time
 
-test_files = [f for f in os.listdir("/apps") if f.endswith(".py")]
+try:
+    test_files = [f for f in os.listdir("/apps") if f.endswith(".py")]
+except OSError:
+    test_files = []
 current_selection = 0
 scroll_offset = 0
 VISIBLE_ITEMS = 3

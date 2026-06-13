@@ -168,8 +168,8 @@ buttonU = ThumbyButton(board.GP4)
 buttonD = ThumbyButton(board.GP6)
 buttonL = ThumbyButton(board.GP3)
 buttonR = ThumbyButton(board.GP5)
-buttonA = ThumbyButton(board.GP24)
-buttonB = ThumbyButton(board.GP27)
+buttonA = ThumbyButton(board.GP27)
+buttonB = ThumbyButton(board.GP24)
 
 def inputPressed():
     return buttonU.pressed() or buttonD.pressed() or buttonL.pressed() or \

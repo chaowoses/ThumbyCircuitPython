@@ -19,7 +19,7 @@ While the original Thumby runs on MicroPython, this project provides a compatibl
 * **/lib** — Includes `thumby.py` and required Adafruit drivers (HID, SSD1306, Framebuf).
 * **/apps** — Hardware test scripts and tools (includes `ducky.py`).
 * **/ducky_payloads** — `.txt` files for HID/BadUSB injections.
-* **/fonts** — Binary font file (`font5x8.bin`) for the OLED.
+* **font5x8.bin** — Binary font file for the OLED (required by `adafruit_framebuf`).
 * **/ref** — Hardware reference (schematic PDF).
 * **code.py** — The main menu launcher.
 

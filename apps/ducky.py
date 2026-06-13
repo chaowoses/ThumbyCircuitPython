@@ -9,7 +9,10 @@ from adafruit_hid.keycode import Keycode
 kbd = Keyboard(usb_hid.devices)
 layout = KeyboardLayoutUS(kbd)
 
-payloads = sorted([f for f in os.listdir("/ducky_payloads") if f.endswith(".txt")])
+try:
+    payloads = sorted([f for f in os.listdir("/ducky_payloads") if f.endswith(".txt")])
+except OSError:
+    payloads = []
 current_selection = 0
 scroll_offset = 0
 VISIBLE_ITEMS = 3

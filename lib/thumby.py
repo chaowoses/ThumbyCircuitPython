@@ -52,8 +52,8 @@ class ThumbyGraphics:
     def fill(self, color): 
         self.display.fill(color)
         
-    def brightness(self, b): 
-        self.display.brightness(b)
+    def brightness(self, b):
+        self.display.contrast(b)
         
     def setPixel(self, x, y, c): 
         self.display.pixel(x, y, c)
@@ -75,7 +75,28 @@ class ThumbyGraphics:
     
     def blit(self, data, x, y, w, h, key=-1, mirrorX=False, mirrorY=False):
         import adafruit_framebuf
-        fbuf = adafruit_framebuf.FrameBuffer(bytearray(data), w, h, adafruit_framebuf.MHMSB)
+        buf = bytearray(data)
+        row_bytes = (w + 7) // 8
+        if mirrorX:
+            for row in range(h):
+                start = row * row_bytes
+                for i in range(row_bytes // 2):
+                    a = start + i
+                    b = start + row_bytes - 1 - i
+                    buf[a], buf[b] = buf[b], buf[a]
+                for i in range(start, start + row_bytes):
+                    b = buf[i]
+                    b = ((b & 0xF0) >> 4) | ((b & 0x0F) << 4)
+                    b = ((b & 0xCC) >> 2) | ((b & 0x33) << 2)
+                    b = ((b & 0xAA) >> 1) | ((b & 0x55) << 1)
+                    buf[i] = b
+        if mirrorY:
+            for row in range(h // 2):
+                a = row * row_bytes
+                b = (h - 1 - row) * row_bytes
+                for i in range(row_bytes):
+                    buf[a + i], buf[b + i] = buf[b + i], buf[a + i]
+        fbuf = adafruit_framebuf.FrameBuffer(buf, w, h, adafruit_framebuf.MHMSB)
         self.display.blit(fbuf, x, y, key)
 
 class ThumbyAudio:

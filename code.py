@@ -7,6 +7,11 @@ current_selection = 0
 
 def show_menu():
     thumby.display.fill(0)
+    if not test_files:
+        thumby.display.drawText("NO SCRIPTS", 5, 15, 1)
+        thumby.display.drawText("/examples/", 5, 25, 1)
+        thumby.display.update()
+        return
     thumby.display.drawText("PROGRAMS", 1, 1, 1)
     thumby.display.drawLine(0, 10, 72, 10, 1)
     
@@ -19,6 +24,8 @@ def show_menu():
 
 while True:
     show_menu()
+    if not test_files:
+        continue
     
     if thumby.buttonD.justPressed():
         current_selection = (current_selection + 1) % len(test_files)

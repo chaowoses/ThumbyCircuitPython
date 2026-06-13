@@ -32,9 +32,13 @@ def run_ducky(filename):
                 elif cmd == "ENTER":
                     kbd.send(Keycode.ENTER)
                 elif cmd == "GUI":
-                    key = getattr(Keycode, arg.upper())
-                    kbd.press(Keycode.GUI, key)
-                    kbd.release_all()
+                    if arg:
+                        key = getattr(Keycode, arg.upper(), None)
+                        if key is not None:
+                            kbd.press(Keycode.GUI, key)
+                            kbd.release_all()
+                    else:
+                        kbd.send(Keycode.GUI)
         return True
     except OSError:
         return False

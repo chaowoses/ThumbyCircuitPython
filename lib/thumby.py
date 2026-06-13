@@ -191,6 +191,19 @@ def dpadPressed():
 def dpadJustPressed():
     return buttonU.justPressed() or buttonD.justPressed() or buttonL.justPressed() or buttonR.justPressed()
 
+def confirm_exit():
+    display.fill(0)
+    display.drawText("EXIT?", 22, 8, 1)
+    display.drawLine(0, 16, 72, 16, 1)
+    display.drawText("A: Back", 5, 22, 1)
+    display.drawText("B: Exit", 5, 32, 1)
+    display.update()
+    while True:
+        if buttonA.justPressed():
+            return False
+        if buttonB.justPressed():
+            return True
+
 def update():
     display.update()
 

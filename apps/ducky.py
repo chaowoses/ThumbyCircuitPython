@@ -69,6 +69,10 @@ while True:
     if not payloads:
         continue
 
+    if thumby.buttonB.justPressed():
+        if thumby.confirm_exit():
+            break
+
     if thumby.buttonD.justPressed():
         current_selection = (current_selection + 1) % len(payloads)
     if thumby.buttonU.justPressed():

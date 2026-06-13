@@ -50,6 +50,5 @@ while True:
         thumby.display.update()
         
         with open(selected_script, "r") as f:
-            exec(f.read())
-        
-        time.sleep(1)
+            ns = dict(globals())
+            exec(f.read(), ns)

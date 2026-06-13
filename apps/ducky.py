@@ -9,7 +9,7 @@ from adafruit_hid.keycode import Keycode
 kbd = Keyboard(usb_hid.devices)
 layout = KeyboardLayoutUS(kbd)
 
-payloads = sorted([f for f in os.listdir("/payloads") if f.endswith(".txt")])
+payloads = sorted([f for f in os.listdir("/ducky_payloads") if f.endswith(".txt")])
 current_selection = 0
 scroll_offset = 0
 VISIBLE_ITEMS = 3
@@ -45,7 +45,6 @@ def show_menu():
     thumby.display.fill(0)
     if not payloads:
         thumby.display.drawText("NO PAYLOADS", 5, 15, 1)
-        thumby.display.drawText("/payloads/", 5, 25, 1)
         thumby.display.update()
         return
     thumby.display.drawText("PAYLOADS", 1, 1, 1)
@@ -73,7 +72,7 @@ while True:
         current_selection = (current_selection - 1) % len(payloads)
 
     if thumby.buttonA.justPressed():
-        path = "/payloads/" + payloads[current_selection]
+        path = "/ducky_payloads/" + payloads[current_selection]
         thumby.display.fill(0)
         thumby.display.drawText("INJECTING...", 5, 15, 1)
         thumby.display.update()

@@ -9,19 +9,19 @@ While the original Thumby runs on MicroPython, this project provides a compatibl
 ## Features
 
 * **1:1 API Compatibility:** Designed to mirror the original Thumby MicroPython API (`thumby.display`, `thumby.button`, etc.).
-* **Integrated BadUSB:** Built-in interpreter for Ducky-style scripts via the `/payloads` folder.
-* **Example Launcher:** A menu system that launches your python scripts in `/examples`.
+* **Integrated BadUSB:** Built-in interpreter for Ducky-style scripts via the `/ducky_payloads` folder.
+* **App Launcher:** A menu system that launches your python scripts in `/apps`.
 
 ---
 
 ## Repository Structure
 
 * **/lib** — Includes `thumby.py` and required Adafruit drivers (HID, SSD1306, Framebuf).
-* **/examples** — Hardware test scripts (Includes `ducky.py`).
-* **/payloads** — `.txt` files for HID/BadUSB injections.
-* **code.py** — The main Menu Launcher.
-* **font5x8.bin** — Essential binary font file for the OLED.
-* **ThumbySchematic.pdf** — Hardware reference used for this implementation.
+* **/apps** — Hardware test scripts and tools (includes `ducky.py`).
+* **/ducky_payloads** — `.txt` files for HID/BadUSB injections.
+* **/fonts** — Binary font file (`font5x8.bin`) for the OLED.
+* **/ref** — Hardware reference (schematic PDF).
+* **code.py** — The main menu launcher.
 
 ---
 
@@ -48,14 +48,12 @@ While the original Thumby runs on MicroPython, this project provides a compatibl
 ---
 
 ### BadUSB / Payloads
-This device acts as a keyboard. Trigger scripts in `/payloads/` from the main menu by pressing:
-* **D-Pad Up/Down/Left/Right**: Executes `u.txt`, `d.txt`, `l.txt`, or `r.txt`.
-* **Button A/B**: Executes `a.txt` or `b.txt`
+This device acts as a keyboard. Select scripts from `/ducky_payloads/` using the on-device menu in `ducky.py`.
 
 ---
 
 ## Example Payload Syntax
-Create `.txt` files in `/payloads/` using standard Ducky Script:
+Create `.txt` files in `/ducky_payloads/` using standard Ducky Script:
 ```text
 DELAY 500
 GUI r

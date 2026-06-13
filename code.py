@@ -2,7 +2,7 @@ import os
 import thumby
 import time
 
-test_files = [f for f in os.listdir("/examples") if f.endswith(".py")]
+test_files = [f for f in os.listdir("/apps") if f.endswith(".py")]
 current_selection = 0
 scroll_offset = 0
 VISIBLE_ITEMS = 3
@@ -12,7 +12,7 @@ def show_menu():
     thumby.display.fill(0)
     if not test_files:
         thumby.display.drawText("NO SCRIPTS", 5, 15, 1)
-        thumby.display.drawText("/examples/", 5, 25, 1)
+        thumby.display.drawText("/apps/", 5, 25, 1)
         thumby.display.update()
         return
     thumby.display.drawText("PROGRAMS", 1, 1, 1)
@@ -41,7 +41,7 @@ while True:
         current_selection = (current_selection - 1) % len(test_files)
         
     if thumby.buttonA.justPressed():
-        selected_script = "/examples/" + test_files[current_selection]
+        selected_script = "/apps/" + test_files[current_selection]
         thumby.display.fill(0)
         thumby.display.drawText("Running...", 10, 15, 1)
         thumby.display.update()

@@ -1,3 +1,4 @@
+import os
 import time
 import usb_hid
 import thumby
@@ -8,14 +9,10 @@ from adafruit_hid.keycode import Keycode
 kbd = Keyboard(usb_hid.devices)
 layout = KeyboardLayoutUS(kbd)
 
-PAYLOADS = {
-    "U": "/payloads/U.txt",
-    "D": "/payloads/D.txt",
-    "L": "/payloads/L.txt",
-    "R": "/payloads/R.txt",
-    "A": "/payloads/A.txt",
-    "B": "/payloads/B.txt"
-}
+payloads = sorted([f for f in os.listdir("/payloads") if f.endswith(".txt")])
+current_selection = 0
+scroll_offset = 0
+VISIBLE_ITEMS = 3
 
 def run_ducky(filename):
     try:
@@ -43,31 +40,45 @@ def run_ducky(filename):
     except OSError:
         return False
 
-thumby.display.fill(0)
-thumby.display.drawText("READY", 25, 15, 1)
-thumby.display.update()
+def show_menu():
+    global scroll_offset
+    thumby.display.fill(0)
+    if not payloads:
+        thumby.display.drawText("NO PAYLOADS", 5, 15, 1)
+        thumby.display.drawText("/payloads/", 5, 25, 1)
+        thumby.display.update()
+        return
+    thumby.display.drawText("PAYLOADS", 1, 1, 1)
+    thumby.display.drawLine(0, 10, 72, 10, 1)
+
+    if current_selection < scroll_offset:
+        scroll_offset = current_selection
+    if current_selection >= scroll_offset + VISIBLE_ITEMS:
+        scroll_offset = current_selection - VISIBLE_ITEMS + 1
+
+    for i in range(scroll_offset, min(scroll_offset + VISIBLE_ITEMS, len(payloads))):
+        prefix = ">" if i == current_selection else " "
+        name = payloads[i][:-4]
+        thumby.display.drawText(prefix + name[:9], 5, 12 + ((i - scroll_offset) * 10), 1)
+    thumby.display.update()
 
 while True:
-    target = None
-    if thumby.buttonU.justPressed(): target = "U"
-    if thumby.buttonD.justPressed(): target = "D"
-    if thumby.buttonL.justPressed(): target = "L"
-    if thumby.buttonR.justPressed(): target = "R"
-    if thumby.buttonA.justPressed(): target = "A"
-    if thumby.buttonB.justPressed(): target = "B"
+    show_menu()
+    if not payloads:
+        continue
 
-    if target:
+    if thumby.buttonD.justPressed():
+        current_selection = (current_selection + 1) % len(payloads)
+    if thumby.buttonU.justPressed():
+        current_selection = (current_selection - 1) % len(payloads)
+
+    if thumby.buttonA.justPressed():
+        path = "/payloads/" + payloads[current_selection]
         thumby.display.fill(0)
-        thumby.display.drawText(f"INJECTING {target}", 5, 15, 1)
+        thumby.display.drawText("INJECTING...", 5, 15, 1)
         thumby.display.update()
-        
-        success = run_ducky(PAYLOADS[target])
-        
-        if not success:
-            thumby.display.drawText("NO FILE", 5, 25, 1)
+
+        if not run_ducky(path):
+            thumby.display.drawText("FAILED", 5, 25, 1)
             thumby.display.update()
             time.sleep(1)
-        
-        thumby.display.fill(0)
-        thumby.display.drawText("READY", 25, 15, 1)
-        thumby.display.update()

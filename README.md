@@ -57,7 +57,6 @@ This device acts as a keyboard. Trigger scripts in `/payloads/` from the main me
 ## Example Payload Syntax
 Create `.txt` files in `/payloads/` using standard Ducky Script:
 ```text
-# TITLE: Rickroll
 DELAY 500
 GUI r
 DELAY 200
